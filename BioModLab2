@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def full_reversible_Hill_equation(S, X, K_x=3*10**(-3), K_prime=1, K_m=8, gamma=0, pi=0, n=2.5, alpha=10**(2.5), V_f = 100/(180*10**(3))): #[concentration]=mM
+    sigma = S/K_m
+
+    numerator = sigma * (1 - (gamma / K_prime)) * (sigma + pi) ** (n - 1)
+
+    ksi = X / K_x
+    modulator = (1 + ksi ** (n)) / (1 + alpha * ksi ** (n))
+    denominator = ((sigma + pi) ** (n)) + modulator
+
+    return (numerator / denominator)
+
+
+def question1(): #Why is that?
+    print('Why is that?')
+    print('Calculate the equilibrium constant of the reaction.')
+    print('1 kcal= 4.1868 kJ, R = 8.314 J/mol K (molar gas constant).')
+    print('Both ATP and F6P are generally present in greater concentrations')
+    print('in the cell than ADP and FBP, respectively.')
+    print()
+    kcal = 4.1868 * 10 ** (3)  # J
+    deltaG0 = -3.5*kcal #/mol
+    R = 8.314 #J/(mol K)
+    T = 293 #K
+    K = np.exp(-deltaG0/(R*T))
+    print('The equilibrium constant is ' + str(K))
+    print('which means that for every reaction going backward')
+    print('there are ' + str(K) + ' reactions going forward.')
+    print('Thus, we can treat the reaction as one-directional.')
+
+def question2():
+    j = []
+    #F6P = []
+    FBP = 0
+
+    #S = F6P
+    FBP = 0
+
+    concentrations = 50
+    for i in range(concentrations):
+        F6P = i
+        j.append(full_reversible_Hill_equation(S=F6P, X=FBP))
+
+    plt.plot(j)
+    plt.xlabel('mM')
+    plt.ylabel('j/V_f')
+    plt.title('FBP is ' + str(FBP))
+    plt.show()
+
+
+
+#question1()
+question2()
